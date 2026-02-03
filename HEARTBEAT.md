@@ -1,5 +1,5 @@
 # HEARTBEAT.md
 
-# Keep this file empty (or with only comments) to skip heartbeat API calls.
+# Periodic Checks
 
-# Add tasks below when you want the agent to check something periodically.
+- [ ] **System Backup:** Check `git status`. If there are modified files, run `git add . && git commit -m "Auto-save: Routine backup" && git push`.
