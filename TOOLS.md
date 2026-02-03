@@ -38,3 +38,10 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+## Infrastructure
+
+### GitHub
+- **Repo:** https://github.com/intriasolutions-agency/INTRIA-BOT.git
+- **Token (PAT):** `[REDACTED - Saved in git config]`
+- **User:** Intria Bot <bot@intria.agency>
