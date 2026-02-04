@@ -20,6 +20,8 @@ if [ ! -f "/root/.openclaw/openclaw.json" ]; then
     openclaw onboard --defaults --no-interaction
 fi
 
-# 3. Start Gateway
+# 3. Start Gateway (Bind to 0.0.0.0 for Cloud/Docker compatibility)
 echo "🚀 LAUNCHING INTRIA BOT..."
-exec openclaw gateway run
+# Use PORT env var if provided (Render/Heroku), else default to 18789
+PORT="${PORT:-18789}"
+exec openclaw gateway run --port "$PORT" --bind "0.0.0.0"
