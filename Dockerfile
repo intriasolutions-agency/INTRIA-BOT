@@ -1,21 +1,9 @@
-FROM node:22-bookworm
+FROM node:22-bookworm-slim
 
-# Install dependencies
+# Install dependencies (Minimal)
 RUN apt-get update && apt-get install -y \
     git \
-    chromium \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    librandr2 \
-    libgbm1 \
-    libasound2 \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Install OpenClaw globally
