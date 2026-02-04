@@ -1,11 +1,6 @@
-import csv
-import io
 import requests
 import re
-from concurrent.futures import ThreadPoolExecutor
 
-# The identifiers from the sheet, extracted manually and from the CSV fetch
-# Order is critical as per the sheet. I'll use the IDs found in the CSV.
 identifiers = [
     "165-65r14-1hnsp", "35-12-50-r20-mt-copia-1jyzo", "3312-50-r17-mt-kjlwr", "315-75r17-1hx2x",
     "llanas-off-road-4x4-1jxe5", "265-65r17-q16mi", "265-65r17-ablum", "265-65r17-nztdg",
@@ -32,31 +27,25 @@ identifiers = [
     "245-70r16-xbri-brutus-t-a-at-a-t-mixto", "235-75r15-fate-range-runner-ht-h-t-serie-2"
 ]
 
-# Ensure we have 95 items (this is 95 exactly)
-if len(identifiers) != 95:
-    print(f"Warning: Found {len(identifiers)} items, expected 95")
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+}
 
-def get_image(identifier):
+for identifier in identifiers:
     url = f"https://www.xbrisantafe.shop/productos/{identifier}/"
+    img_url = ""
     try:
-        r = requests.get(url, timeout=10)
+        r = requests.get(url, headers=headers, timeout=10)
+        # print(f"DEBUG: {identifier} - {r.status_code}")
         if r.status_code == 200:
-            # Look for 1024-1024.webp links
             match = re.search(r'(https://[^\s\"\'<>]+-1024-1024\.webp)', r.text)
             if match:
                 img_url = match.group(1)
-                # Verify image loads
-                ir = requests.head(img_url, timeout=5)
-                if ir.status_code == 200:
-                    return img_url
-        return ""
+            else:
+                # Try fallback for any cloudfront image if 1024-1024 is missing
+                match_any = re.search(r'(https://dcdn-us\.mitiendanube\.com/stores/[^\s\"\'<>]+)', r.text)
+                if match_any:
+                    img_url = match_any.group(1).split('.webp')[0] + "-1024-1024.webp"
     except:
-        return ""
-
-with ThreadPoolExecutor(max_workers=5) as executor:
-    results = list(executor.map(get_image, identifiers))
-
-for res in results:
-    print(res)
-    import sys
-    sys.stdout.flush()
+        pass
+    print(img_url)

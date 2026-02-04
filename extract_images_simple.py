@@ -5,19 +5,29 @@ import time
 
 def get_image_url(identifier):
     product_url = f"https://www.xbrisantafe.shop/productos/{identifier}/"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
     try:
-        response = requests.get(product_url, timeout=15)
+        response = requests.get(product_url, timeout=15, headers=headers)
         if response.status_code != 200:
             return "NOT_FOUND"
         
         content = response.text
         
-        # Look for 1024-1024 pattern, accounting for protocol-relative URLs
-        # Example: //dcdn-us.mitiendanube.com/stores/005/620/101/products/175-65-14-roadx-rxmotion-h11-82t-excelente-calidad-89-000-2-12d6aa5ec34221710e17684875436637-1024-1024.webp
+        # Look for the pattern in image_url field within JS or attributes
+        # Pattern example: "image_url":"\/\/dcdn-us.mitiendanube.com\/...-1024-1024.webp"
+        matches = re.findall(r'image_url["\']?\s*[:=]\s*["\']([^"\']+\-1024\-1024\.[a-zA-Z0-9]+)["\']', content)
+        if matches:
+            url = matches[0].replace('\\/', '/')
+            if url.startswith('//'):
+                return "https:" + url
+            return url
+        
+        # Alternative search for standard URL pattern
         matches = re.findall(r'(?:https:)?//[^\s"\'?>]+\-1024\-1024\.[a-zA-Z0-9]+', content)
         for match in matches:
             if "mitiendanube.com" in match or "cloudfront.net" in match:
-                # Add protocol if missing
                 if match.startswith('//'):
                     return "https:" + match
                 return match
@@ -33,7 +43,6 @@ def main():
     results = []
     print(f"Starting extraction for {len(identifiers)} products...")
     
-    # We'll clear the files to restart
     with open('results_partial.txt', 'w') as f: pass
     
     for i, ident in enumerate(identifiers):
@@ -42,7 +51,6 @@ def main():
         line = f"{ident}\t{img_url}"
         results.append(line)
         
-        # Save progress every 1
         with open('results_partial.txt', 'a') as f:
             f.write(line + "\n")
         
