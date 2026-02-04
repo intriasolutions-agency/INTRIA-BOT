@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@remotion/cli": "^4.0.417",
+    "@remotion/renderer": "^4.0.417",
+    "@types/react": "^19.2.11",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.417"
+  }
+}
