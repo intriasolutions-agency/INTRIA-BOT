@@ -5,3 +5,4 @@
 
 ## Hitos Operativos
 - **2026-02-03:** Superación de bloqueos técnicos críticos (AppArmor, Snap, Espacio en Disco) para habilitar navegación visual completa con Chromium.
+- **2026-02-04:** Implementación de navegación optimizada (`--headless=new`, `--no-sandbox`) para evitar congelamiento del sistema en tareas de scraping/login (Caso Tiendanube exitoso).
