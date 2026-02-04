@@ -1,0 +1,19 @@
+[Unit]
+Description=Intria Rescue Bot (OpenClaw)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/.openclaw/workspace-rescue
+ExecStart=/home/ubuntu/.npm-global/bin/openclaw --profile rescue gateway run
+Restart=always
+RestartSec=5s
+Environment=PATH=/home/ubuntu/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=NODE_ENV=production
+Environment=OPENCLAW_CONFIG_PATH=/home/ubuntu/.openclaw/openclaw-rescue.json
+# Low memory limit for rescue bot to ensure it survives
+Environment=NODE_OPTIONS="--max-old-space-size=512"
+
+[Install]
+WantedBy=multi-user.target

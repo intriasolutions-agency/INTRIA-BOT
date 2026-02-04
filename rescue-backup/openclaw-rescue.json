@@ -1,0 +1,61 @@
+{
+  "env": {
+    "OPENAI_API_KEY": "REDACTED"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai/gpt-4o-mini"
+      },
+      "models": {
+        "openai/gpt-4o-mini": {
+          "alias": "gpt-mini"
+        }
+      },
+      "workspace": "/home/ubuntu/.openclaw/workspace-rescue",
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "botToken": "8570627464:AAHL7ID8Hk9rADb6ONnC1JoI8fqlT0I12BU",
+      "allowFrom": [
+        "5122466518"
+      ],
+      "groupPolicy": "allowlist",
+      "streamMode": "partial"
+    }
+  },
+  "gateway": {
+    "port": 19789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "rescue-token-secure-999"
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.2.1",
+    "lastTouchedAt": "2026-02-04T14:42:41.969Z"
+  }
+}
