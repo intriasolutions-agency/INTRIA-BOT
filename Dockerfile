@@ -1,18 +1,21 @@
 FROM node:22-bookworm-slim
 
-# Install dependencies (Minimal)
-RUN apt-get update && apt-get install -y \
-    git \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+# 1. Optimize Node memory for Free Tier
+ENV NODE_OPTIONS="--max-old-space-size=512"
+ENV NPM_CONFIG_LOGLEVEL=error
 
-# Install OpenClaw globally
-RUN npm install -g openclaw@latest
+# 2. Install Git (Required for cloning Soul)
+RUN apt-get update && \
+    apt-get install -y git ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-# Create workspace
+# 3. Install OpenClaw (Lightweight mode)
+RUN npm install -g openclaw@latest --no-audit --no-fund
+
+# 4. Setup Workspace
 WORKDIR /root/.openclaw/workspace
 
-# Copy local backup script to entrypoint (will be overwritten by git pull in real usage)
+# 5. Prepare Entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
