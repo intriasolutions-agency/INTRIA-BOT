@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  intria-bot:
+    build: .
+    restart: always
+    network_mode: host
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENCLAW_GATEWAY_TOKEN=${GATEWAY_TOKEN}
+    volumes:
+      - ./memory_data:/root/.openclaw/workspace/memory
+      - ./openclaw_data:/root/.openclaw
